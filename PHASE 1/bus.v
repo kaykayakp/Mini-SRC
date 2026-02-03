@@ -22,11 +22,11 @@ module Bus(
     input [31:0] BusMuxIn_Zlow, 
     input [31:0] BusMuxIn_PC, 
     input [31:0] BusMuxIn_MDR, 
-    input [31:0] BusMuxIn_In.port,
+    input [31:0] BusMuxIn_In_port,
     input [31:0] C_sign_extended,  
     //Encoder
     input R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out,
-    input R14out, R15out, HIout, LOout, Zhighout, Zlowout, PCout, MDRout, In.Portout, Cout
+    input R14out, R15out, HIout, LOout, Zhighout, Zlowout, PCout, MDRout, In_Portout, Cout
 
     output wire [31:0] BusMuxOut
 );
