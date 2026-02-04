@@ -58,7 +58,7 @@ always @ (*) begin
     else if (MDRout) q = BusMuxIn_MDR;
     else if (In_Portout) q = BusMuxIn_In_Port;
     else if (Cout) q = C_sign_extended;
-    else q = 32'd0; // Default case 
+    else q = 32'd0; 
 end
 assign BusMuxOut = q;
 endmodule

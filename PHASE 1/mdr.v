@@ -1,9 +1,12 @@
 module mdr(
-    input wire clock, clear,MDRin,Read,            
+    input wire clock, 
+    input wire clear,
+    input wire MDRin,
+    input wire Read,            
     input wire [31:0] BusMuxOut,
     input wire [31:0] Mdatain,  
     output [31:0] BusMuxIn_MDR        
-
+);
     reg [31:0]q;
 
     always @(posedge clock) begin
@@ -15,7 +18,6 @@ module mdr(
                 q <= Mdatain;        // load from memory
             else 
                 q<= BusMuxOut;     // load from bus
-            end
         end
     end 
 
