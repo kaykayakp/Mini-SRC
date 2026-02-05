@@ -25,40 +25,73 @@ module Bus(
     input [31:0] BusMuxIn_In_Port,
     input [31:0] C_sign_extended,  
     //Encoder
-    input R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out,
-    input R14out, R15out, HIout, LOout, Zhighout, Zlowout, PCout, MDRout, In_Portout, Cout,
+    input wire 0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out,
+    R14out, R15out, HIout, LOout, Zhighout, Zlowout, PCout, MDRout, In_Portout, Cout,
 
     output wire [31:0] BusMuxOut
 );
 
-reg [31:0]q; 
+//32 to 5 encoder 
+reg [4:0]Select; 
 
 always @ (*) begin
-    if (R0out) q = BusMuxIn_R0;
-    else if (R1out) q = BusMuxIn_R1;
-    else if (R2out) q = BusMuxIn_R2;
-    else if (R3out) q = BusMuxIn_R3;
-    else if (R4out) q = BusMuxIn_R4;
-    else if (R5out) q = BusMuxIn_R5;
-    else if (R6out) q = BusMuxIn_R6;
-    else if (R7out) q = BusMuxIn_R7;
-    else if (R8out) q = BusMuxIn_R8;
-    else if (R9out) q = BusMuxIn_R9;
-    else if (R10out) q = BusMuxIn_R10;
-    else if (R11out) q = BusMuxIn_R11;
-    else if (R12out) q = BusMuxIn_R12;
-    else if (R13out) q = BusMuxIn_R13;
-    else if (R14out) q = BusMuxIn_R14;
-    else if (R15out) q = BusMuxIn_R15;
-    else if (HIout) q = BusMuxIn_HI;
-    else if (LOout) q = BusMuxIn_LO;
-    else if (Zhighout) q = BusMuxIn_Zhigh;
-    else if (Zlowout) q = BusMuxIn_Zlow;
-    else if (PCout) q = BusMuxIn_PC;
-    else if (MDRout) q = BusMuxIn_MDR;
-    else if (In_Portout) q = BusMuxIn_In_Port;
-    else if (Cout) q = C_sign_extended;
-    else q = 32'd0; 
+    if (R0out) Select = 5'd0;
+    else if (R1out) Select = 5'd1;
+    else if (R2out) Select = 5'd2;
+    else if (R3out) Select = 5'd3;
+    else if (R4out) Select = 5'd4;
+    else if (R5out) Select = 5'd5;
+    else if (R6out) Select = 5'd6;
+    else if (R7out) Select = 5'd7;
+    else if (R8out) Select = 5'd8;
+    else if (R9out) Select = 5'd9;
+    else if (R10out) Select = 5'd10;
+    else if (R11out) Select = 5'd11;
+    else if (R12out) Select = 5'd12;
+    else if (R13out) Select = 5'd13;
+    else if (R14out) Select = 5'd14;
+    else if (R15out) Select = 5'd15;
+    else if (HIout) Select = 5'd16;
+    else if (LOout) Select = 5'd17;
+    else if (Zhighout) Select = 5'd18;
+    else if (Zlowout) Select = 5'd19;
+    else if (PCout) Select = 5'd20;
+    else if (MDRout) Select = 5'd21;
+    else if (In_Portout) Select = 5'd22;
+    else if (Cout) Select = 5'd23;
+    else Select = 5'd31; //default to 0
 end
-assign BusMuxOut = q;
+
+//32:1 multiplexer
+reg[31:0] mux_out
+always @(*) begin
+    case(Select)
+        5'd0: mux_out = BusMuxIn_R0;
+        5'd1: mux_out = BusMuxIn_R1;
+        5'd2: mux_out = BusMuxIn_R2;
+        5'd3: mux_out = BusMuxIn_R3;
+        5'd4: mux_out = BusMuxIn_R4;
+        5'd5: mux_out = BusMuxIn_R5;
+        5'd6: mux_out = BusMuxIn_R6;
+        5'd7: mux_out = BusMuxIn_R7;
+        5'd8: mux_out = BusMuxIn_R8;
+        5'd9: mux_out = BusMuxIn_R9;
+        5'd10: mux_out = BusMuxIn_R10;
+        5'd11: mux_out = BusMuxIn_R11;
+        5'd12: mux_out = BusMuxIn_R12;
+        5'd13: mux_out = BusMuxIn_R13;
+        5'd14: mux_out = BusMuxIn_R14;
+        5'd15: mux_out = BusMuxIn_R15;
+        5'd16: mux_out = BusMuxIn_HI;
+        5'd17: mux_out = BusMuxIn_LO;
+        5'd18: mux_out = BusMuxIn_Zhigh;
+        5'd19: mux_out = BusMuxIn_Zlow;
+        5'd20: mux_out = BusMuxIn_PC;
+        5'd21: mux_out = BusMuxIn_MDR;
+        5'd22: mux_out = BusMuxIn_In_Port;
+        5'd23: mux_out = C_sign_extended;
+        default: mux_out = 32'd0;
+    endcase
+end
+assign BusMuxOut = mux_out;
 endmodule
