@@ -52,7 +52,7 @@ module alu(
             5'b00111: C = ror;                     // ROTATE RIGHT  
             5'b01000: C = rol;                     // ROTATE LEFT   
             5'b01111: C = ~A;                      // NOT
-            5'b01110: C = sub_sum;                 // NEGATE 
+            5'b01110: C = -A;                      // NEGATE
             default:  C = 32'd0;
         endcase
     end
