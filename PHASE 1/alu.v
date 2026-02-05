@@ -9,6 +9,7 @@ module alu(
     reg [63:0] C_wide;
     assign Z = {32'b0, C};   // for now
 
+//STILL WORKING ON THIS!!!!
 
 always @(*) begin
     C=32'd0;
