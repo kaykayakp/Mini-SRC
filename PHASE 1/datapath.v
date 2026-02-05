@@ -25,6 +25,13 @@ module datapath(
 
     wire[63:0]ALU_out_wide;
 
+    //split the z into lo and hi 
+    wire [31:0] zlow_in;
+    assign zlow_in = (IncPC) ? pc_plus1 : ALU_out_wide[31:0]; 
+    
+    wire [31:0] zhigh_in;
+    assign zhigh_in = ALU_out_wide[63:32];
+
     //general purpose registers
     register R0(clear, clock, R0in, BusMuxOut, BusMuxIn_R0);
     register R1(clear, clock, R1in, BusMuxOut, BusMuxIn_R1);
@@ -49,6 +56,9 @@ module datapath(
     register mar(clear, clock, MARin, BusMuxOut, BusMuxIn_MAR);
     register y(clear, clock, Yin, BusMuxOut, BusMuxIn_Y);
     register z_low(clear, clock, Zin, z_in, BusMuxIn_Zlow);
+    register z_high(clear, clock, Zin, zhigh_in, BusMuxIn_Zhigh);
+    register hi_reg(clear,clock, HIin, BusMuxOut, BusMuxIn_HI);
+    register lo_reg(clear,clock, LOin, BusMuxOut, BusMuxIn_LO);
 
     //connect MDR unit 
     mdr mdr_unit(clock, clear, MDRin, Read, BusMuxOut, Mdatain, BusMuxIn_MDR);

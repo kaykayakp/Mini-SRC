@@ -50,7 +50,7 @@ module alu(
             5'b00101: C = $signed(A) >>> shamt;    // SHR arithmetic
             5'b00110: C = A << shamt;              // SHL
             5'b00111: C = ror;                     // ROTATE RIGHT  
-            5'b01000: C = rol;                     // ROTATE LEFT   (
+            5'b01000: C = rol;                     // ROTATE LEFT   
             5'b01111: C = ~A;                      // NOT
             5'b01110: C = sub_sum;                 // NEGATE 
             default:  C = 32'd0;
