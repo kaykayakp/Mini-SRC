@@ -136,7 +136,7 @@ module not_tb;
       end
 
       T4: begin
-        ALU_Control <= 5'b00101; // NOT
+        ALU_Control <= 5'b01111; // NOT
         Zin    <= 1'b1;
       end
 
