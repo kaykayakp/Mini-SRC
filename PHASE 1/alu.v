@@ -35,32 +35,67 @@ module alu(
         .Sum(sub_sum),
         .Cout(sub_cout)
     );
+	 
+	     // MUL / DIV units
+    wire [63:0] mul_prod;
+    wire [31:0] div_quot, div_rem;
+
+    booth u_mul(
+        .multiplicand(A),
+        .multiplier(B),
+        .product(mul_prod)
+    );
+
+    div u_div(
+        .dividend(A),
+        .divisor(B),
+        .quotient(div_quot),
+        .remainder(div_rem)
+    );
 
     
     reg [31:0] C;
+    reg [63:0] W;
 
     always @(*) begin
         C = 32'd0;
+        W = 64'd0;
+
         case (select)
-            5'b00000: C = add_sum;                 // ADD (RCA)
-            5'b00001: C = sub_sum;                 // SUB (RCA)
-            5'b00010: C = A & B;                   // AND
-            5'b00011: C = A | B;                   // OR
-            5'b00100: C = A >> shamt;              // SHR logical
-            5'b00101: C = $signed(A) >>> shamt;    // SHR arithmetic
-            5'b00110: C = A << shamt;              // SHL
-            5'b00111: C = ror;                     // ROTATE RIGHT  
-            5'b01000: C = rol;                     // ROTATE LEFT   
-            5'b01111: C = ~A;                      // NOT
-            5'b01110: C = sub_sum;                      // NEGATE
-            default:  C = 32'd0;
+            5'b00000: begin C = add_sum; W = {32'd0, add_sum}; end  // ADD
+            5'b00001: begin C = sub_sum; W = {32'd0, sub_sum}; end  // SUB
+            5'b00010: begin C = A & B;   W = {32'd0, (A & B)}; end  // AND
+            5'b00011: begin C = A | B;   W = {32'd0, (A | B)}; end  // OR
+            5'b00100: begin C = A >> shamt;           W = {32'd0, C}; end
+            5'b00101: begin C = $signed(A) >>> shamt; W = {32'd0, C}; end
+            5'b00110: begin C = A << shamt;           W = {32'd0, C}; end
+            5'b00111: begin C = ror;                  W = {32'd0, C}; end
+            5'b01000: begin C = rol;                  W = {32'd0, C}; end
+            5'b01110: begin C = sub_sum; W = {32'd0, C}; end
+
+
+            // NEW OPCODES:
+            5'b01001: begin
+                W = mul_prod;           // full 64-bit product
+                C = mul_prod[31:0];     // Zlow
+            end
+
+            5'b01010: begin
+                W = {div_rem, div_quot}; // Zhigh=remainder, Zlow=quotient
+                C = div_quot;
+            end
+
+            5'b01111: begin C = ~A; W = {32'd0, C}; end           // NOT
+            5'b01110: begin C = -A; W = {32'd0, C}; end           // NEG
+
+            default:  begin C = 32'd0; W = 64'd0; end
         endcase
     end
 
     assign Zlow  = C;
-    assign Zwide = {32'b0, C};   
+    assign Zwide = W;
+
 
 endmodule
 
 `default_nettype wire
-

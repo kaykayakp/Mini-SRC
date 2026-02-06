@@ -55,8 +55,8 @@ module datapath(
     register ir(clear, clock, IRin, BusMuxOut, BusMuxIn_IR);
     register mar(clear, clock, MARin, BusMuxOut, BusMuxIn_MAR);
     register y(clear, clock, Yin, BusMuxOut, BusMuxIn_Y);
-    register z_low(clear, clock, Zin, z_in, BusMuxIn_Zlow);
-    register z_high(clear, clock, Zin, zhigh_in, BusMuxIn_Zhigh);
+	 register z_low (clear, clock, Zin, zlow_in,  BusMuxIn_Zlow);
+	 register z_high(clear, clock, Zin, zhigh_in, BusMuxIn_Zhigh);
     register hi_reg(clear,clock, HIin, BusMuxOut, BusMuxIn_HI);
     register lo_reg(clear,clock, LOin, BusMuxOut, BusMuxIn_LO);
 
