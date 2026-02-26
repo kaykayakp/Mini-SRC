@@ -6,8 +6,8 @@ module datapath(
     input wire R0out, R1out, R2out, R3out, R4out, R5out, R6out, R7out, R8out, R9out, R10out, R11out, R12out, R13out, R14out, R15out,
     HIout, LOout, Zhighout, Zlowout, PCout, MDRout, In_Portout, Cout,
     input wire IncPC,
-    input wire [31:0]Mdatain,
     input wire[4:0] ALU_Control,
+    input wire write,
     output wire [31:0]Out_Portout
 ); 
 
@@ -61,7 +61,7 @@ module datapath(
     register lo_reg(clear,clock, LOin, BusMuxOut, BusMuxIn_LO);
 
     //connect MDR unit 
-    mdr mdr_unit(clock, clear, MDRin, Read, BusMuxOut, Mdatain, BusMuxIn_MDR);
+    mdr mdr_unit(clock, clear, MDRin, Read, BusMuxOut, internal_mdatain, BusMuxIn_MDR);
     //connect ALU unit 
     alu alu_unit(BusMuxIn_Y, BusMuxOut, ALU_Control, ALU_out, ALU_out_wide);
 

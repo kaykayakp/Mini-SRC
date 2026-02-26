@@ -56,6 +56,11 @@ module add_tb;
   initial begin
     clear = 1'b1;
     #5 clear = 1'b0;
+
+    DATA.RAM.mem[0] = 32'h112B0000;
+
+    DUT.R5.q = 32'h00000034;
+    DUT.R6.q = 32'h00000045;
   end
 
   always @(posedge clock) begin
